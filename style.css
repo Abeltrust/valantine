@@ -1,0 +1,84 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Page background (paper texture) */
+  body {
+    min-height: 100vh;
+    background-color: #f3efe8;
+    background-image: url("https://www.transparenttextures.com/patterns/paper.png");
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Playfair Display", serif;
+  }
+  
+  /* Simulate Canva mobile website width */
+  .canvas {
+    width: 390px;
+    padding: 40px 0;
+  }
+  
+  /* Floral frame (online image) */
+  .frame {
+    background-image: url("https://i.imgur.com/0G3Q0Qm.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    padding: 70px;
+  }
+  
+  /* Letter card */
+  .card {
+    background: #f7e7d2;
+    padding: 36px 24px;
+    text-align: center;
+    border-radius: 6px;
+    box-shadow: 0 14px 35px rgba(0,0,0,0.15);
+  }
+  
+  /* Text styles */
+  .subtitle {
+    font-size: 12px;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+  
+  h1 {
+    font-family: "Allura", cursive;
+    font-size: 46px;
+    color: #8a2d2d;
+    margin: 16px 0 26px;
+  }
+  
+  /* Buttons */
+  .actions {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+  }
+  
+  button {
+    padding: 9px 20px;
+    font-size: 13px;
+    border-radius: 5px;
+    border: none;
+    background: #8a2d2d;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+  
+  button:hover {
+    transform: scale(1.06);
+  }
+  
+  #no {
+    background: #b04646;
+  }
