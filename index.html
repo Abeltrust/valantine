@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Love Mail 💌</title>
 
 <!-- Icons -->
@@ -13,59 +13,70 @@
 
 <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<!-- Online romantic music -->
-<audio id="bg-music" loop>
-  <source src="https://cdn.pixabay.com/download/audio/2023/02/28/audio_47a1d9f42c.mp3" type="audio/mpeg">
+<!-- Background music -->
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/audio/2023/03/07/audio_1b5c2f93df.mp3">
 </audio>
 
 <!-- Falling petals -->
 <div id="petals"></div>
 
-<!-- PAGE 1 -->
-<section class="page active" id="page1">
-  <div class="frame">
-    <div class="card">
-      <p class="small">WILL YOU BE MY</p>
-      <h1>Valentine?</h1>
-      <div class="buttons">
-        <button id="yes">YES <i class="bi bi-heart-fill"></i></button>
-        <button id="no">NO</button>
-      </div>
+<!-- SCENE 1 -->
+<section class="scene active">
+  <div class="card">
+    <img class="envelope" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=800">
+    <p class="soft">Love Mail</p>
+  </div>
+</section>
+
+<!-- SCENE 2 -->
+<section class="scene">
+  <div class="card">
+    <p class="text">
+      Proof that distance means nothing<br>
+      when the intention is real.
+    </p>
+  </div>
+</section>
+
+<!-- SCENE 3 -->
+<section class="scene">
+  <div class="card">
+    <p class="soft">WILL YOU BE MY</p>
+    <h1>Valentine?</h1>
+    <div class="buttons">
+      <button id="yes">YES ❤️</button>
+      <button id="no">NO</button>
     </div>
   </div>
 </section>
 
-<!-- PAGE 2 -->
-<section class="page" id="page2">
-  <div class="frame">
-    <div class="card">
-      <h1>Proof 💖</h1>
-      <p class="text">
-        That distance means nothing<br>
-        when the intention is real.
-      </p>
-      <button id="next">Continue 💌</button>
-    </div>
+<!-- SCENE 4 -->
+<section class="scene">
+  <div class="card">
+    <h1>Always 💖</h1>
+    <p class="text">
+      This moment is gentle.<br>
+      This love is intentional.
+    </p>
+    <button id="next">Continue 💌</button>
   </div>
 </section>
 
-<!-- PAGE 3 -->
-<section class="page" id="page3">
-  <div class="frame">
-    <div class="card">
-      <h1>Share This Love</h1>
-      <p class="text">
-        Let them feel what words alone cannot say.
-      </p>
-      <a id="whatsapp" target="_blank">
-        <button class="whatsapp">
-          <i class="bi bi-whatsapp"></i> Share on WhatsApp
-        </button>
-      </a>
-    </div>
+<!-- SCENE 5 -->
+<section class="scene">
+  <div class="card">
+    <h1>Share This Love</h1>
+    <p class="text">
+      Let them feel what words alone cannot say.
+    </p>
+    <a id="wa" target="_blank">
+      <button class="whatsapp">
+        <i class="bi bi-whatsapp"></i> Share on WhatsApp
+      </button>
+    </a>
   </div>
 </section>
 

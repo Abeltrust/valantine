@@ -1,46 +1,50 @@
-const pages = document.querySelectorAll(".page");
+const scenes = document.querySelectorAll(".scene");
 const card = document.querySelector(".card");
-const music = document.getElementById("bg-music");
-let musicStarted = false;
+const music = document.getElementById("music");
+let index = 0;
+let started = false;
 
-/* Page switching */
-function showPage(id) {
-  pages.forEach(p => p.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
+// Auto scene flow
+setTimeout(nextScene, 3000);
+setTimeout(nextScene, 6500);
+
+function nextScene() {
+  if (index < scenes.length - 1) {
+    scenes[index].classList.remove("active");
+    index++;
+    scenes[index].classList.add("active");
+  }
 }
 
-document.getElementById("yes").onclick = () => showPage("page2");
-document.getElementById("next").onclick = () => showPage("page3");
+// Buttons
+document.getElementById("yes").onclick = nextScene;
+document.getElementById("next").onclick = nextScene;
 
-/* Gentle mouse movement (like the video) */
-document.addEventListener("mousemove", (e) => {
-  const x = (window.innerWidth / 2 - e.clientX) / 35;
-  const y = (window.innerHeight / 2 - e.clientY) / 35;
+// Gentle mouse movement
+document.addEventListener("mousemove", e => {
+  const x = (window.innerWidth / 2 - e.clientX) / 40;
+  const y = (window.innerHeight / 2 - e.clientY) / 40;
   card.style.transform = `translate(${x}px, ${y}px)`;
 
-  if (!musicStarted) {
+  if (!started) {
     music.play().catch(()=>{});
-    musicStarted = true;
+    started = true;
   }
 });
 
-/* WhatsApp share */
-const message = encodeURIComponent(
+// WhatsApp message
+const msg = encodeURIComponent(
   "💌 Proof that distance means nothing when the intention is real.\n\nThis love letter was made just for you ❤️"
 );
+document.getElementById("wa").href = `https://wa.me/?text=${msg}`;
 
-document.getElementById("whatsapp").href =
-  `https://wa.me/?text=${message}`;
-
-/* Falling petals */
+// Falling petals
 const petals = document.getElementById("petals");
-
 setInterval(() => {
-  const petal = document.createElement("img");
-  petal.src = "https://pngimg.com/uploads/rose_petals/rose_petals_PNG570.png";
-  petal.style.left = Math.random() * 100 + "vw";
-  petal.style.animationDuration = 10 + Math.random() * 6 + "s";
-  petals.appendChild(petal);
-
-  setTimeout(() => petal.remove(), 16000);
-}, 1200);
+  const p = document.createElement("img");
+  p.src = "https://pngimg.com/uploads/rose_petals/rose_petals_PNG570.png";
+  p.style.left = Math.random() * 100 + "vw";
+  p.style.animationDuration = 12 + Math.random() * 6 + "s";
+  petals.appendChild(p);
+  setTimeout(() => p.remove(), 18000);
+}, 1500);
