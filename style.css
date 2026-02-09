@@ -1,84 +1,98 @@
-/* Reset */
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
   }
   
-  /* Page background (paper texture) */
   body {
-    min-height: 100vh;
-    background-color: #f3efe8;
-    background-image: url("https://www.transparenttextures.com/patterns/paper.png");
-    display: flex;
+    margin: 0;
+    height: 100vh;
+    background: #f5efe6 url("https://www.transparenttextures.com/patterns/paper.png");
+    font-family: "Playfair Display", serif;
+    overflow: hidden;
+  }
+  
+  /* Pages */
+  .page {
+    position: absolute;
+    inset: 0;
+    display: none;
     align-items: center;
     justify-content: center;
-    font-family: "Playfair Display", serif;
+    opacity: 0;
+    transition: opacity 1.5s ease;
   }
   
-  /* Simulate Canva mobile website width */
-  .canvas {
-    width: 390px;
-    padding: 40px 0;
+  .page.active {
+    display: flex;
+    opacity: 1;
   }
   
-  /* Floral frame (online image) */
+  /* Floral frame */
   .frame {
-    background-image: url("https://i.imgur.com/0G3Q0Qm.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
+    background: url("https://images.unsplash.com/photo-1526045612212-70caf35c14df?q=80&w=800") center/contain no-repeat;
     padding: 70px;
   }
   
-  /* Letter card */
+  /* Card */
   .card {
-    background: #f7e7d2;
-    padding: 36px 24px;
+    background: #fff4e6;
+    padding: 40px 30px;
+    max-width: 340px;
     text-align: center;
-    border-radius: 6px;
-    box-shadow: 0 14px 35px rgba(0,0,0,0.15);
+    border-radius: 8px;
+    box-shadow: 0 25px 60px rgba(0,0,0,.15);
+    transition: transform .3s ease;
   }
   
-  /* Text styles */
-  .subtitle {
-    font-size: 12px;
+  .small {
+    font-size: 13px;
     letter-spacing: 3px;
-    margin-bottom: 8px;
   }
   
   h1 {
     font-family: "Allura", cursive;
     font-size: 46px;
-    color: #8a2d2d;
-    margin: 16px 0 26px;
+    color: #8b2e2e;
+    margin: 15px 0;
+  }
+  
+  .text {
+    font-size: 15px;
+    line-height: 1.6;
   }
   
   /* Buttons */
-  .actions {
+  .buttons {
     display: flex;
+    gap: 15px;
     justify-content: center;
-    gap: 14px;
   }
   
   button {
-    padding: 9px 20px;
-    font-size: 13px;
-    border-radius: 5px;
     border: none;
-    background: #8a2d2d;
-    color: #fff;
+    background: #8b2e2e;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 6px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: transform 0.2s ease, background 0.2s ease;
+    font-size: 14px;
   }
   
-  button:hover {
-    transform: scale(1.06);
+  .whatsapp {
+    background: #25D366;
+    font-size: 15px;
   }
   
-  #no {
-    background: #b04646;
+  /* Petals */
+  #petals img {
+    position: absolute;
+    top: -50px;
+    width: 26px;
+    opacity: .4;
+    animation: fall linear infinite;
+  }
+  
+  @keyframes fall {
+    to {
+      transform: translateY(110vh) rotate(360deg);
+    }
   }
