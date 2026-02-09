@@ -1,78 +1,89 @@
 body {
     margin: 0;
-    background: #fff7ef;
+    background: #fff7ef url("https://www.transparenttextures.com/patterns/paper.png");
     font-family: "Playfair Display", serif;
-    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
   }
   
-  .top {
-    text-align: center;
-    padding: 40px 20px;
-  }
-  
-  .top h1 {
-    color: #d33;
-    font-family: "Allura", cursive;
-    font-size: 42px;
-  }
-  
-  .frame {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 50px 30px;
-    background: #fff1e6;
-    border-radius: 18px;
-    text-align: center;
-    box-shadow: 0 15px 40px rgba(0,0,0,.08);
-  }
-  
-  .envelopes {
+  .page {
+    width: 100%;
     display: flex;
     justify-content: center;
-    gap: 30px;
-    margin-top: 30px;
-    flex-wrap: wrap;
+  }
+  
+  .floral-frame {
+    background: url("https://i.imgur.com/VG6QpTt.png") center/contain no-repeat;
+    padding: 90px;
+  }
+  
+  .card {
+    background: #fff1e6;
+    padding: 50px 40px;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,.15);
+    width: 320px;
+  }
+  
+  .envelope-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
   }
   
   .envelope {
     width: 160px;
     height: 220px;
-    background: #c62828;
-    border-radius: 10px;
-    cursor: pointer;
     position: relative;
-    transition: transform .3s ease;
+    cursor: pointer;
+    perspective: 800px;
   }
   
-  .envelope:hover {
-    transform: translateY(-6px);
-  }
-  
-  .envelope .front {
+  .body {
     position: absolute;
     inset: 0;
-    background: linear-gradient(#e53935, #b71c1c);
+    background: #b71c1c;
     border-radius: 10px;
   }
   
-  .envelope .message {
+  .flap {
     position: absolute;
-    inset: 0;
+    top: 0;
+    width: 100%;
+    height: 55%;
+    background: #d32f2f;
+    clip-path: polygon(0 0, 50% 100%, 100% 0);
+    transform-origin: top;
+    transition: transform .7s ease;
+    z-index: 3;
+  }
+  
+  .letter {
+    position: absolute;
+    inset: 12px;
     background: #fff;
-    border-radius: 10px;
+    border-radius: 6px;
     padding: 15px;
-    display: none;
-    font-size: 14px;
+    display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
+    transform: translateY(60%);
+    opacity: 0;
+    transition: transform .7s ease, opacity .7s ease;
+    font-size: 14px;
   }
   
-  .envelope.open .front {
-    display: none;
+  .envelope.open .flap {
+    transform: rotateX(-160deg);
   }
   
-  .envelope.open .message {
-    display: flex;
+  .envelope.open .letter {
+    transform: translateY(-10%);
+    opacity: 1;
   }
   
   button {
@@ -85,6 +96,6 @@ body {
     cursor: pointer;
   }
   
-  .whatsapp {
+  button.whatsapp {
     background: #25D366;
   }
