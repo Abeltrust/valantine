@@ -5,80 +5,66 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Love Mail 💌</title>
 
-<!-- Icons -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-
-<!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Allura&display=swap" rel="stylesheet">
-
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- Background music -->
-<audio id="music" loop>
-  <source src="https://cdn.pixabay.com/audio/2023/03/07/audio_1b5c2f93df.mp3">
-</audio>
+<header class="top">
+  <h1><i class="bi bi-envelope-heart"></i> Love Mail</h1>
+  <p>A collection of heartfelt messages</p>
+</header>
 
-<!-- Falling petals -->
-<div id="petals"></div>
+<main>
 
-<!-- SCENE 1 -->
-<section class="scene active">
-  <div class="card">
-    <img class="envelope" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=800">
-    <p class="soft">Love Mail</p>
-  </div>
-</section>
+  <!-- FRAME 1 -->
+  <section class="frame">
+    <h2>You Mean The World To Me</h2>
+    <p>Thank you for being my Valentine every single day</p>
+  </section>
 
-<!-- SCENE 2 -->
-<section class="scene">
-  <div class="card">
-    <p class="text">
-      Proof that distance means nothing<br>
-      when the intention is real.
-    </p>
-  </div>
-</section>
+  <!-- FRAME 2 – ENVELOPES -->
+  <section class="frame">
+    <h2>Open These Letters 💌</h2>
 
-<!-- SCENE 3 -->
-<section class="scene">
-  <div class="card">
-    <p class="soft">WILL YOU BE MY</p>
-    <h1>Valentine?</h1>
-    <div class="buttons">
-      <button id="yes">YES ❤️</button>
-      <button id="no">NO</button>
+    <div class="envelopes">
+      <div class="envelope" data-message="You are my favorite thought every morning.">
+        <div class="front"></div>
+        <div class="message"></div>
+      </div>
+
+      <div class="envelope" data-message="Loving you feels like home.">
+        <div class="front"></div>
+        <div class="message"></div>
+      </div>
+
+      <div class="envelope" data-message="Every heartbeat carries your name.">
+        <div class="front"></div>
+        <div class="message"></div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- SCENE 4 -->
-<section class="scene">
-  <div class="card">
-    <h1>Always 💖</h1>
-    <p class="text">
-      This moment is gentle.<br>
-      This love is intentional.
-    </p>
-    <button id="next">Continue 💌</button>
-  </div>
-</section>
+  <!-- FRAME 3 -->
+  <section class="frame">
+    <h2>Will you be my Valentine?</h2>
+    <button class="yes">Yes ❤️</button>
+  </section>
 
-<!-- SCENE 5 -->
-<section class="scene">
-  <div class="card">
-    <h1>Share This Love</h1>
-    <p class="text">
-      Let them feel what words alone cannot say.
-    </p>
+  <!-- FRAME 4 – SHARE -->
+  <section class="frame">
+    <h2>Share This Love</h2>
+    <p>Let them feel what this means</p>
+
     <a id="wa" target="_blank">
       <button class="whatsapp">
         <i class="bi bi-whatsapp"></i> Share on WhatsApp
       </button>
     </a>
-  </div>
-</section>
+  </section>
+
+</main>
 
 <script src="script.js"></script>
 </body>
