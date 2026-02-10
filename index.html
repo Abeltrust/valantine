@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>A Gentle Valentine</title>
+<title>A Gentle Valentine 💖</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <!-- Bootstrap CDN -->
@@ -13,36 +13,32 @@
 
 <style>
 /* =====================
-   THEME
+   GLOBAL THEME
 ===================== */
-:root {
-  --bg: #fff7ef;
-  --card: #fff1e6;
-  --accent: #b71c1c;
-  --soft: #6b5e57;
-}
-
 body {
   margin: 0;
-  background: var(--bg);
+  background: radial-gradient(circle at top, #ffb3c1 0%, #7b0f1b 70%);
   font-family: "Playfair Display", serif;
   min-height: 100vh;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background 1.5s ease;
 }
 
 /* =====================
-   MAIN FRAME
+   MAIN CARD
 ===================== */
-.frame {
-  background: var(--card);
+.card-box {
+  background: rgba(255, 241, 230, 0.96);
+  padding: 60px;
+  border-radius: 28px;
   width: 520px;
-  padding: 70px 60px;
-  border-radius: 24px;
-  box-shadow: 0 30px 80px rgba(0,0,0,.18);
   text-align: center;
+  box-shadow: 0 40px 100px rgba(0,0,0,.25);
   position: relative;
+  z-index: 5;
 }
 
 /* =====================
@@ -51,351 +47,154 @@ body {
 h1 {
   font-family: "Allura", cursive;
   font-size: 3rem;
-  color: var(--accent);
+  color: #b71c1c;
 }
 
 p {
-  font-size: 1rem;
-  color: var(--soft);
+  font-size: 1.1rem;
   line-height: 1.7;
+  color: #5a0c18;
 }
 
 /* =====================
-   ENVELOPE
+   FLOATING TEXT ANIMATIONS
 ===================== */
-.envelope {
-  width: 380px;
-  height: 240px;
-  margin: 30px auto;
-  position: relative;
-  perspective: 1200px;
+@keyframes fromLeft {
+  from { transform: translateX(-50px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+@keyframes fromRight {
+  from { transform: translateX(50px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+@keyframes fromTop {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@keyframes fromBottom {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
-.envelope .body {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(#c62828, #b71c1c);
-  border-radius: 10px;
+.float-text {
+  animation-duration: 1.3s;
+  animation-timing-function: ease-out;
 }
 
-.envelope .flap {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 55%;
-  background: #d32f2f;
-  clip-path: polygon(0 0, 50% 100%, 100% 0);
-  transform-origin: top;
-  transition: transform 1.6s ease;
-  z-index: 3;
+.wander {
+  animation: wander 6s ease-in-out infinite alternate;
 }
 
-.envelope .letter {
-  position: absolute;
-  inset: 18px;
-  background: #fff;
-  border-radius: 6px;
-  padding: 26px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-size: 18px;
-  line-height: 1.6;
-  transform: translateY(40%);
-  opacity: 0;
-  transition: transform 1.6s ease, opacity 1.6s ease;
-}
-
-.envelope.open .flap {
-  transform: rotateX(-160deg);
-}
-
-.envelope.open .letter {
-  transform: translateY(-5%);
-  opacity: 1;
+@keyframes wander {
+  from { transform: translate(0, 0); }
+  to { transform: translate(6px, -6px); }
 }
 
 /* =====================
    BUTTONS
 ===================== */
-button {
-  padding: 12px 26px;
+.buttons {
+  margin-top: 50px;
+  position: relative;
+  height: 140px;
+}
+
+#yesBtn {
+  padding: 12px 28px;
   border-radius: 30px;
   border: none;
-  cursor: pointer;
+  background: #b71c1c;
+  color: #fff;
   font-size: 16px;
-}
-
-.btn-accent {
-  background: var(--accent);
-  color: white;
-}
-
-.btn-outline {
-  background: transparent;
-  border: 1px solid #aaa;
-  color: #444;
-}
-
-/* NO button area */
-.button-area {
   position: relative;
-  height: 120px;
+  z-index: 3;
 }
 
 #noBtn {
   position: absolute;
-  left: 200px;
+  left: 300px;
+  top: 0;
+  padding: 12px 28px;
+  border-radius: 30px;
+  border: 1px solid #aaa;
+  background: transparent;
+  color: #444;
   pointer-events: none;
   transition: transform .25s ease;
+}
+
+/* =====================
+   FLOATING EMOJIS
+===================== */
+.float-emoji {
+  position: fixed;
+  font-size: 24px;
+  opacity: 0.8;
+  z-index: 1;
+  transition: transform 6s linear, opacity 6s linear;
 }
 </style>
 </head>
 
 <body>
 
-<div class="frame" id="app"></div>
+<div class="card-box" id="app"></div>
+
 <script>
-  /* =====================
-     AUDIO
-  ===================== */
-  const music = new Audio(
-    "https://cdn.pixabay.com/audio/2023/03/07/audio_1b5c2f93df.mp3"
-  );
-  music.loop = true;
-  
-  /* =====================
-     STATE
-  ===================== */
-  let stage = 0;          // overall stage
-  let messageIndex = 0;  // prelude messages
-  let noClicks = 0;
-  let isValentine = false;
-  
-  const app = document.getElementById("app");
-  
-  /* =====================
-     CONTENT
-  ===================== */
-  const PRELUDE_MESSAGES = [
-    "Hey… how have you been, really?",
-    "I hope today has been gentle with you.",
-    "Love doesn’t always shout — sometimes it just sits quietly.",
-    "It’s nice when someone chooses care, even in small ways.",
-    "So I wanted to ask you something…"
-  ];
-  
-  const NO_PHRASES = [
-    "No 💔",
-    "Pretty please? 🥺",
-    "But we'd be so cute together 💕",
-    "One more chance?",
-    "Don't break my heart :(",
-    "What about a maybe?",
-    "I'm fragile 😭"
-  ];
-  
-  /* =====================
-     RENDER ROUTER
-  ===================== */
-  function render() {
-    if (stage === 0) renderIntro();
-    else if (stage === 1) renderPrelude();
-    else if (stage === 2) renderQuestion();
-    else if (stage === 3) renderSuccess();
-  }
-  
-  /* =====================
-     STAGES
-  ===================== */
-  function renderIntro() {
-    app.innerHTML = `
-      <p class="pop">🌸</p>
-      <p>This is a small moment made with care.</p>
-      <button class="btn-accent mt-4" onclick="startExperience()">
-        Begin
-      </button>
-    `;
-  }
-  
-  function startExperience() {
-    music.play().catch(() => {});
-    stage = 1;
-    render();
-  }
-  
-  /* ---------- PRELUDE (5 messages) ---------- */
-  function renderPrelude() {
-    app.innerHTML = `
-      <div class="pop">🌸🌷💐</div>
-      <p style="font-size:1.1rem;">
-        ${PRELUDE_MESSAGES[messageIndex]}
-      </p>
-      <button class="btn-accent mt-4" onclick="nextPrelude()">
-        Continue
-      </button>
-    `;
-  }
-  
-  function nextPrelude() {
-    messageIndex++;
-    if (messageIndex >= PRELUDE_MESSAGES.length) {
-      stage = 2;
-    }
-    render();
-  }
-  
-  /* ---------- QUESTION ---------- */
-  function renderQuestion() {
-    music.pause();           // 🔑 STOP MUSIC HERE
-    music.currentTime = 0;
-  
-    const yesSize = 16 + noClicks * 5;
-  
-    app.innerHTML = `
-      <h1>Will you be my Valentine? 💘</h1>
-  
-      <div class="buttons mt-4">
-        <button
-          id="yesBtn"
-          style="font-size:${yesSize}px; min-width:140px;"
-        >
-          Yes 💖
-        </button>
-  
-        <button
-          id="noBtn"
-          style="min-width:140px;"
-        >
-          ${noClicks === 0
-            ? "No"
-            : NO_PHRASES[Math.min(noClicks - 1, NO_PHRASES.length - 1)]}
-        </button>
-      </div>
-    `;
-  
-    document.getElementById("yesBtn").onclick = handleYes;
-    enableNoRun();
-  }
-  
-  /* ---------- NO BUTTON LOGIC ---------- */
-  function enableNoRun() {
-    const noBtn = document.getElementById("noBtn");
-    const area = document.querySelector(".buttons");
-  
-    // ensure precise spacing
-    noBtn.style.left = "260px";
-    noBtn.style.top = "0";
-    noBtn.style.position = "absolute";
-    noBtn.style.pointerEvents = "none";
-  
-    area.onmousemove = (e) => {
-      const r = area.getBoundingClientRect();
-      const x = e.clientX - r.left;
-      const y = e.clientY - r.top;
-  
-      noBtn.style.transform =
-        `translate(${-(x - 160) * 0.35}px, ${-(y - 40) * 0.35}px)`;
-    };
-  
-    // count attempts
-    area.onclick = () => {
-      noClicks++;
-      render();
-    };
-  }
-  
-  /* ---------- YES ---------- */
-  function handleYes() {
-    stage = 3;
-    document.body.style.background = "#7b0f1b";
-    render();
-  }
-  
-  /* ---------- SUCCESS ---------- */
-  function renderSuccess() {
-    app.innerHTML = `
-      <div class="pop">🌹💖🌸💐</div>
-      <h1>Yay!!! 💖</h1>
-      <p style="color:#ffeaea;">
-        This moment just bloomed beautifully.
-      </p>
-  
-      <a
-        href="https://wa.me/?text=${encodeURIComponent(
-          "🌸 Someone shared a gentle Valentine moment with me 💖 " +
-          location.href
-        )}"
-        target="_blank"
-      >
-        <button class="btn-accent mt-4">
-          Share on WhatsApp 💬
-        </button>
-      </a>
-    `;
-  
-    startFalling();
-  }
-  
-  /* =====================
-     FALLING FLOWERS / HEARTS
-  ===================== */
-  function startFalling() {
-    const icons = ["💖","🌸","💐","❤️","🌹"];
-  
-    setInterval(() => {
-      const el = document.createElement("div");
-      el.className = "fall";
-      el.textContent = icons[Math.floor(Math.random() * icons.length)];
-      el.style.left = Math.random() * 100 + "vw";
-      el.style.animationDuration = (4 + Math.random() * 4) + "s";
-      document.body.appendChild(el);
-  
-      setTimeout(() => el.remove(), 8000);
-    }, 300);
-  }
-  
-  /* INIT */
-  render();
-  </script>
-<!-- <script>
 /* =====================
-   STATE ENGINE
+   AUDIO
+===================== */
+const music = new Audio(
+  "https://cdn.pixabay.com/audio/2023/03/07/audio_1b5c2f93df.mp3"
+);
+music.loop = true;
+
+/* =====================
+   STATE
 ===================== */
 let stage = 0;
-let envelopeIndex = 0;
-
-const envelopeMessages = [
-  "Some feelings arrive quietly.",
-  "Care does not need to be loud.",
-  "Kindness stays longer than words.",
-  "Love doesn’t rush.",
-  "Warmth is a choice.",
-  "Gentle things are powerful.",
-  "What is real does not fade.",
-  "Intention changes everything.",
-  "Being seen matters.",
-  "This moment was made with care."
-];
+let messageIndex = 0;
+let noClicks = 0;
 
 const app = document.getElementById("app");
 
-function nextStage() {
-  stage++;
-  render();
+/* =====================
+   CONTENT
+===================== */
+const PRELUDE_MESSAGES = [
+  "Hey… how have you been, really?",
+  "I hope today has been gentle with you.",
+  "Love doesn’t always shout — sometimes it just sits quietly.",
+  "It’s nice when someone chooses care, even in small ways.",
+  "So I wanted to ask you something…"
+];
+
+const NO_PHRASES = [
+  "No 💔",
+  "Pretty please? 🥺",
+  "But we'd be so cute together 💕",
+  "One more chance?",
+  "Don't break my heart :(",
+  "What about a maybe?",
+  "I'm fragile 😭"
+];
+
+/* =====================
+   HELPERS
+===================== */
+function randomTextAnimation() {
+  const a = ["fromLeft", "fromRight", "fromTop", "fromBottom"];
+  return a[Math.floor(Math.random() * a.length)];
 }
 
 /* =====================
-   RENDER FUNCTIONS
+   RENDER ROUTER
 ===================== */
 function render() {
   if (stage === 0) renderIntro();
-  else if (stage === 1) renderIntention();
-  else if (stage >= 2 && stage < 12) renderEnvelope();
-  else if (stage === 12) renderQuestion();
-  else if (stage === 13) renderAffirmation();
-  else renderShare();
+  else if (stage === 1) renderPrelude();
+  else if (stage === 2) renderQuestion();
+  else renderSuccess();
 }
 
 /* =====================
@@ -403,83 +202,133 @@ function render() {
 ===================== */
 function renderIntro() {
   app.innerHTML = `
-    <p>This is a small moment.</p>
-    <button class="btn-accent mt-4" onclick="nextStage()">Continue</button>
+    <p class="float-text wander" style="animation-name:${randomTextAnimation()}">
+      🌸 This is a small moment made with care.
+    </p>
+    <button id="yesBtn" class="mt-4" onclick="startExperience()">Begin</button>
   `;
 }
 
-function renderIntention() {
+function startExperience() {
+  music.play().catch(() => {});
+  stage = 1;
+  render();
+}
+
+function renderPrelude() {
   app.innerHTML = `
-    <p>No pressure. No expectations.<br>Just something made gently.</p>
-    <button class="btn-accent mt-4" onclick="nextStage()">Begin</button>
+    <p class="float-text wander" style="animation-name:${randomTextAnimation()}">
+      ${PRELUDE_MESSAGES[messageIndex]}
+    </p>
+    <button id="yesBtn" class="mt-4" onclick="nextPrelude()">Continue</button>
   `;
 }
 
-function renderEnvelope() {
-  app.innerHTML = `
-    <div class="envelope open" id="env">
-      <div class="flap"></div>
-      <div class="body"></div>
-      <div class="letter">${envelopeMessages[envelopeIndex]}</div>
-    </div>
-    <button class="btn-accent mt-3" onclick="nextEnvelope()">Next</button>
-  `;
-
-  // replay open animation
-  const env = document.getElementById("env");
-  env.classList.remove("open");
-  setTimeout(() => env.classList.add("open"), 300);
-}
-
-function nextEnvelope() {
-  envelopeIndex++;
-  nextStage();
+function nextPrelude() {
+  messageIndex++;
+  if (messageIndex >= PRELUDE_MESSAGES.length) {
+    stage = 2;
+  }
+  render();
 }
 
 function renderQuestion() {
+  music.pause();
+  music.currentTime = 0;
+
+  const yesSize = 16 + noClicks * 5;
+
   app.innerHTML = `
-    <h1>Will you be my Valentine?</h1>
-    <div class="button-area mt-4">
-      <button class="btn-accent" onclick="nextStage()">Yes 🤍</button>
-      <button class="btn-outline" id="noBtn">No</button>
+    <h1 class="float-text" style="animation-name:${randomTextAnimation()}">
+      Will you be my Valentine? 💘
+    </h1>
+
+    <div class="buttons">
+      <button id="yesBtn" style="font-size:${yesSize}px">Yes 💖</button>
+      <button id="noBtn">
+        ${noClicks === 0 ? "No" : NO_PHRASES[Math.min(noClicks - 1, NO_PHRASES.length - 1)]}
+      </button>
     </div>
   `;
 
-  const noBtn = document.getElementById("noBtn");
-  const area = document.querySelector(".button-area");
+  document.getElementById("yesBtn").onclick = handleYes;
+  enableNoRun();
+}
 
-  area.addEventListener("mousemove", (e) => {
+function enableNoRun() {
+  const noBtn = document.getElementById("noBtn");
+  const area = document.querySelector(".buttons");
+
+  area.onmousemove = (e) => {
     const r = area.getBoundingClientRect();
     const x = e.clientX - r.left;
     const y = e.clientY - r.top;
-    noBtn.style.transform = `translate(${-(x - 120) * 0.3}px, ${-(y - 40) * 0.3}px)`;
-  });
+
+    noBtn.style.transform =
+      `translate(${-(x - 160) * 0.35}px, ${-(y - 40) * 0.35}px)`;
+  };
+
+  area.onclick = () => {
+    noClicks++;
+    render();
+  };
 }
 
-function renderAffirmation() {
-  app.innerHTML = `
-    <h1>Thank you 🤍</h1>
-    <p>You chose gently.</p>
-    <button class="btn-accent mt-4" onclick="nextStage()">Continue</button>
-  `;
+function handleYes() {
+  document.body.style.background =
+    "radial-gradient(circle at center, #ff6f91 0%, #5a0c18 80%)";
+  stage = 3;
+  render();
 }
 
-function renderShare() {
-  const text = encodeURIComponent(
-    "Someone shared this gentle Valentine moment with me 🤍"
-  );
-
+function renderSuccess() {
   app.innerHTML = `
-    <p>If this made you feel something,<br>you can pass it on.</p>
-    <a href="https://wa.me/?text=${text}%20${location.href}" target="_blank">
-      <button class="btn-accent mt-4">Share on WhatsApp</button>
+    <h1 class="float-text wander" style="animation-name:${randomTextAnimation()}">
+      Yay!!! 💖
+    </h1>
+    <p class="float-text wander">
+      This moment just bloomed beautifully.
+    </p>
+
+    <a href="https://wa.me/?text=${encodeURIComponent(
+      "🌸 Someone shared a gentle Valentine moment with me 💖 " + location.href
+    )}" target="_blank">
+      <button id="yesBtn" class="mt-4">Share on WhatsApp 💬</button>
     </a>
   `;
+
+  startFloatingEmojis();
+}
+
+/* =====================
+   FLOATING EMOJIS
+===================== */
+function startFloatingEmojis() {
+  const icons = ["💖", "🌸", "💐", "❤️", "🌹"];
+
+  setInterval(() => {
+    const el = document.createElement("div");
+    el.className = "float-emoji";
+    el.textContent = icons[Math.floor(Math.random() * icons.length)];
+    el.style.left = Math.random() * 100 + "vw";
+    el.style.top = "110vh";
+    el.style.fontSize = 18 + Math.random() * 22 + "px";
+
+    document.body.appendChild(el);
+
+    requestAnimationFrame(() => {
+      el.style.transform =
+        `translate(${(Math.random() - 0.5) * 200}px, -120vh)`;
+      el.style.opacity = 0;
+    });
+
+    setTimeout(() => el.remove(), 6000);
+  }, 350);
 }
 
 /* INIT */
 render();
-</script> -->
+</script>
 
 </body>
 </html>
