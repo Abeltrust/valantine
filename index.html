@@ -2,38 +2,282 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Love Mail 💌</title>
+<title>A Gentle Valentine</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
+<!-- Bootstrap CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Allura&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
-<link rel="stylesheet" href="style.css">
+<style>
+/* =====================
+   THEME
+===================== */
+:root {
+  --bg: #fff7ef;
+  --card: #fff1e6;
+  --accent: #b71c1c;
+  --soft: #6b5e57;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: "Playfair Display", serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =====================
+   MAIN FRAME
+===================== */
+.frame {
+  background: var(--card);
+  width: 520px;
+  padding: 70px 60px;
+  border-radius: 24px;
+  box-shadow: 0 30px 80px rgba(0,0,0,.18);
+  text-align: center;
+  position: relative;
+}
+
+/* =====================
+   TEXT
+===================== */
+h1 {
+  font-family: "Allura", cursive;
+  font-size: 3rem;
+  color: var(--accent);
+}
+
+p {
+  font-size: 1rem;
+  color: var(--soft);
+  line-height: 1.7;
+}
+
+/* =====================
+   ENVELOPE
+===================== */
+.envelope {
+  width: 380px;
+  height: 240px;
+  margin: 30px auto;
+  position: relative;
+  perspective: 1200px;
+}
+
+.envelope .body {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(#c62828, #b71c1c);
+  border-radius: 10px;
+}
+
+.envelope .flap {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 55%;
+  background: #d32f2f;
+  clip-path: polygon(0 0, 50% 100%, 100% 0);
+  transform-origin: top;
+  transition: transform 1.6s ease;
+  z-index: 3;
+}
+
+.envelope .letter {
+  position: absolute;
+  inset: 18px;
+  background: #fff;
+  border-radius: 6px;
+  padding: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.6;
+  transform: translateY(40%);
+  opacity: 0;
+  transition: transform 1.6s ease, opacity 1.6s ease;
+}
+
+.envelope.open .flap {
+  transform: rotateX(-160deg);
+}
+
+.envelope.open .letter {
+  transform: translateY(-5%);
+  opacity: 1;
+}
+
+/* =====================
+   BUTTONS
+===================== */
+button {
+  padding: 12px 26px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.btn-accent {
+  background: var(--accent);
+  color: white;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid #aaa;
+  color: #444;
+}
+
+/* NO button area */
+.button-area {
+  position: relative;
+  height: 120px;
+}
+
+#noBtn {
+  position: absolute;
+  left: 200px;
+  pointer-events: none;
+  transition: transform .25s ease;
+}
+</style>
 </head>
+
 <body>
 
-<div class="page">
+<div class="frame" id="app"></div>
 
-  <div class="floral-frame">
-    <div class="card">
+<script>
+/* =====================
+   STATE ENGINE
+===================== */
+let stage = 0;
+let envelopeIndex = 0;
 
-      <div class="envelope-wrapper">
-        <div class="envelope" id="envelope">
-          <div class="flap"></div>
-          <div class="body"></div>
-          <div class="letter">
-            <p id="message"></p>
-          </div>
-        </div>
-      </div>
+const envelopeMessages = [
+  "Some feelings arrive quietly.",
+  "Care does not need to be loud.",
+  "Kindness stays longer than words.",
+  "Love doesn’t rush.",
+  "Warmth is a choice.",
+  "Gentle things are powerful.",
+  "What is real does not fade.",
+  "Intention changes everything.",
+  "Being seen matters.",
+  "This moment was made with care."
+];
 
-      <button id="nextBtn">Open 💌</button>
+const app = document.getElementById("app");
 
+function nextStage() {
+  stage++;
+  render();
+}
+
+/* =====================
+   RENDER FUNCTIONS
+===================== */
+function render() {
+  if (stage === 0) renderIntro();
+  else if (stage === 1) renderIntention();
+  else if (stage >= 2 && stage < 12) renderEnvelope();
+  else if (stage === 12) renderQuestion();
+  else if (stage === 13) renderAffirmation();
+  else renderShare();
+}
+
+/* =====================
+   STAGES
+===================== */
+function renderIntro() {
+  app.innerHTML = `
+    <p>This is a small moment.</p>
+    <button class="btn-accent mt-4" onclick="nextStage()">Continue</button>
+  `;
+}
+
+function renderIntention() {
+  app.innerHTML = `
+    <p>No pressure. No expectations.<br>Just something made gently.</p>
+    <button class="btn-accent mt-4" onclick="nextStage()">Begin</button>
+  `;
+}
+
+function renderEnvelope() {
+  app.innerHTML = `
+    <div class="envelope open" id="env">
+      <div class="flap"></div>
+      <div class="body"></div>
+      <div class="letter">${envelopeMessages[envelopeIndex]}</div>
     </div>
-  </div>
+    <button class="btn-accent mt-3" onclick="nextEnvelope()">Next</button>
+  `;
 
-</div>
+  // replay open animation
+  const env = document.getElementById("env");
+  env.classList.remove("open");
+  setTimeout(() => env.classList.add("open"), 300);
+}
 
-<script src="script.js"></script>
+function nextEnvelope() {
+  envelopeIndex++;
+  nextStage();
+}
+
+function renderQuestion() {
+  app.innerHTML = `
+    <h1>Will you be my Valentine?</h1>
+    <div class="button-area mt-4">
+      <button class="btn-accent" onclick="nextStage()">Yes 🤍</button>
+      <button class="btn-outline" id="noBtn">No</button>
+    </div>
+  `;
+
+  const noBtn = document.getElementById("noBtn");
+  const area = document.querySelector(".button-area");
+
+  area.addEventListener("mousemove", (e) => {
+    const r = area.getBoundingClientRect();
+    const x = e.clientX - r.left;
+    const y = e.clientY - r.top;
+    noBtn.style.transform = `translate(${-(x - 120) * 0.3}px, ${-(y - 40) * 0.3}px)`;
+  });
+}
+
+function renderAffirmation() {
+  app.innerHTML = `
+    <h1>Thank you 🤍</h1>
+    <p>You chose gently.</p>
+    <button class="btn-accent mt-4" onclick="nextStage()">Continue</button>
+  `;
+}
+
+function renderShare() {
+  const text = encodeURIComponent(
+    "Someone shared this gentle Valentine moment with me 🤍"
+  );
+
+  app.innerHTML = `
+    <p>If this made you feel something,<br>you can pass it on.</p>
+    <a href="https://wa.me/?text=${text}%20${location.href}" target="_blank">
+      <button class="btn-accent mt-4">Share on WhatsApp</button>
+    </a>
+  `;
+}
+
+/* INIT */
+render();
+</script>
+
 </body>
 </html>

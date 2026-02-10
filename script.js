@@ -55,3 +55,15 @@ const messages = [
       next();
     }
   });
+  window.addEventListener("load", () => {
+    const envelope = document.getElementById("envelope");
+    const messageEl = document.getElementById("message");
+  
+    messageEl.textContent = "Proof that distance means nothing when the intention is real.";
+  
+    // reset then open for animation
+    envelope.classList.remove("open");
+    setTimeout(() => {
+      envelope.classList.add("open");
+    }, 400); // gentle delay
+  });
