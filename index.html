@@ -137,7 +137,31 @@ p {
   pointer-events: none;
   transition: transform 7s linear, opacity 7s linear;
 }
+.love-bear {
+  position: fixed;
+  z-index: 2;
+  width: clamp(80px, 18vw, 140px);
+  pointer-events: none;
+  animation: bearPop 4.5s ease-out forwards;
+}
 
+@keyframes bearPop {
+  0% {
+    transform: scale(0.6) translateY(40px);
+    opacity: 0;
+  }
+  20% {
+    transform: scale(1.05) translateY(0);
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.9) translateY(-40px);
+    opacity: 0;
+  }
+}
 </style>
 </head>
 
@@ -332,16 +356,19 @@ function question() {
 
 function success() {
   document.body.style.boxShadow =
-  "inset 0 0 120px rgba(255,180,190,.35)";
+    "inset 0 0 120px rgba(255,180,190,.35)";
+
   app.innerHTML = `
-    <h1 class="float-text " style="animation-name:${randomAnim()}">
+    <h1 class="float-text" style="animation-name:${randomAnim()}">
       You just made this moment beautiful 💖
     </h1>
     <p class="float-text wander">
       Thank you for choosing with your heart.
     </p>
   `;
-  startEmojis();
+
+  startEmojis();     // hearts & flowers
+  startLoveBears(); // 
 }
 
 /* =====================
@@ -379,7 +406,35 @@ function startEmojis() {
     setTimeout(() => e.remove(), 7000);
   }, 350);
 }
+function spawnLoveBear() {
+  const img = document.createElement("img");
+  img.className = "love-bear";
+  img.src = BEARS[Math.floor(Math.random() * BEARS.length)];
 
+  // Random position (safe margins)
+  img.style.left = Math.random() * 70 + 10 + "vw";
+  img.style.top  = Math.random() * 60 + 15 + "vh";
+
+  document.body.appendChild(img);
+
+  setTimeout(() => img.remove(), 4500);
+}
+let bearInterval = null;
+
+function startLoveBears() {
+  if (bearInterval) return;
+
+  spawnLoveBear(); // first one immediately
+
+  bearInterval = setInterval(() => {
+    spawnLoveBear();
+  }, 2200); // every ~2 seconds feels sweet
+}
+
+function stopLoveBears() {
+  clearInterval(bearInterval);
+  bearInterval = null;
+}
 function stopEmojis() {
   clearInterval(emojiInterval);
   emojiInterval = null;
@@ -431,6 +486,11 @@ render();
 
   document.addEventListener("touchstart", wakeEmojisOnce, { passive: true });
   document.addEventListener("click", wakeEmojisOnce);
+
+  const BEARS = [
+  "./bear1.gif",  // jumping bear with hearts
+  "./bear2.gif"   // kissing bears / love bear
+];
 </script>
 </body>
 </html>
