@@ -143,7 +143,6 @@ p {
 <div class="card-box" id="app"></div>
 
 <script>
-  window.addEventListener("DOMContentLoaded", startEmojis);
 /* =====================
    AUDIO (SAFE CDN)
 ===================== */
@@ -250,6 +249,7 @@ function randomAnim() {
    RENDER
 ===================== */
 function render() {
+  startEmojis();
   if (stage === 0) intro();
   else if (stage === 1) poem();
   else if (stage === 2) question();
@@ -260,7 +260,7 @@ function render() {
    STAGES
 ===================== */
 function intro() {
-  startEmojis();
+  
   app.innerHTML = `
     <p class="float-text wander" style="animation-name:${randomAnim()}">
       🌸 Take a deep breath. This is just for you.
@@ -269,7 +269,7 @@ function intro() {
   `;
   document.getElementById("yesBtn").onclick = () => {
     music.play();
-
+    startEmojis();
     stage = 1;
     render();
   };
@@ -308,8 +308,8 @@ function question() {
   document.getElementById("yesBtn").onclick = () => {
     stage = 3;
     render();
-    fadeOut(Music);
-    fadeIn(yesMusic);
+    fadeOut(yesMusic);
+    fadeIn(music);
      startEmojis();
   };
 
@@ -382,7 +382,7 @@ function stopEmojis() {
   emojiInterval = null;
 }
 // Emojis start on page load
-
+window.addEventListener("DOMContentLoaded", startEmojis);
 render();
 </script>
 <script>
