@@ -71,12 +71,12 @@ p {
 @keyframes fromBottom{from {transform:translateY(40px);opacity:0;} to {transform:none;opacity:1;} }
 
 .float-text {
-  animation-duration: 1.4s;
+  animation-duration: 3.4s;
   animation-timing-function: ease-out;
 }
 
 .wander {
-  animation: wander 6s ease-in-out infinite alternate;
+  animation: wander 10s ease-in-out infinite alternate;
 }
 
 @keyframes wander {
@@ -320,7 +320,7 @@ function startEmojis() {
       e.style.transform = `translate(${(Math.random()-0.5)*180}px,-120vh)`;
       e.style.opacity = 0;
     });
-    // setTimeout(()=>e.remove(),7000);
+     setTimeout(()=>e.remove(),7000);
   }, 350);
 }
 
