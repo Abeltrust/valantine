@@ -254,7 +254,7 @@ function render() {
    STAGES
 ===================== */
 function intro() {
-  startEmojis();
+ 
   app.innerHTML = `
     <p class="float-text wander" style="animation-name:${randomAnim()}">
       🌸 Take a deep breath. This is just for you.
@@ -344,19 +344,21 @@ function success() {
 ===================== */
 let emojisStarted = false;
 
+let emojiInterval = null;
+
 function startEmojis() {
-  if (emojisStarted) return;
-  emojisStarted = true;
+  if (emojiInterval) return; // prevent duplicates
 
   const icons = ["💖","🌸","💐","❤️","🌹"];
 
-  setInterval(() => {
+  emojiInterval = setInterval(() => {
     const e = document.createElement("div");
     e.className = "float-emoji";
-    e.textContent = icons[Math.floor(Math.random()*icons.length)];
-    e.style.left = Math.random()*100+"vw";
+    e.textContent = icons[Math.floor(Math.random() * icons.length)];
+    e.style.left = Math.random() * 100 + "vw";
     e.style.top = "110vh";
-    e.style.fontSize = 18+Math.random()*22+"px";
+    e.style.fontSize = 18 + Math.random() * 22 + "px";
+
     document.body.appendChild(e);
 
     requestAnimationFrame(() => {
@@ -365,10 +367,16 @@ function startEmojis() {
       e.style.opacity = 0;
     });
 
-    setTimeout(()=>e.remove(),7000);
+    setTimeout(() => e.remove(), 7000);
   }, 350);
 }
 
+function stopEmojis() {
+  clearInterval(emojiInterval);
+  emojiInterval = null;
+}
+// Emojis start on page load
+window.addEventListener("DOMContentLoaded", startEmojis);
 render();
 </script>
 <script>
