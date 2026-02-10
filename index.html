@@ -143,6 +143,7 @@ p {
 <div class="card-box" id="app"></div>
 
 <script>
+  window.addEventListener("DOMContentLoaded", startEmojis);
 /* =====================
    AUDIO (SAFE CDN)
 ===================== */
@@ -268,7 +269,7 @@ function intro() {
   `;
   document.getElementById("yesBtn").onclick = () => {
     music.play();
-    startEmojis();
+
     stage = 1;
     render();
   };
@@ -307,8 +308,8 @@ function question() {
   document.getElementById("yesBtn").onclick = () => {
     stage = 3;
     render();
-    fadeOut(yesMusic);
-    fadeIn(music);
+    fadeOut(Music);
+    fadeIn(yesMusic);
      startEmojis();
   };
 
@@ -381,7 +382,7 @@ function stopEmojis() {
   emojiInterval = null;
 }
 // Emojis start on page load
-window.addEventListener("DOMContentLoaded", startEmojis);
+
 render();
 </script>
 <script>
