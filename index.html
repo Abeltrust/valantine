@@ -222,25 +222,40 @@ const app = document.getElementById("app");
    CONTENT (POEMS)
 ===================== */
 const POEMS = [
-`Hey… 💕
-How has your heart been today?
-Not the busy part — the quiet part.
-I hope it’s been treated gently,
-because gentleness deserves gentleness.`,
+// `Hey… 💕
+// How has your heart been today?
+// Not the busy part — the quiet part.
+// I hope it’s been treated gently,
+// because gentleness deserves gentleness.`,
+`💕
+Sometimes we stumble over small things and 
+let them grow louder than they should, but somehow, 
+every time, we find our way back. We choose love over pride, 
+us over the moment, and that choice keeps bringing us home to 
+each other.`,
 
 ` 🌸 
-Sometimes love isn’t fireworks.
-Sometimes it’s checking in.
-Sometimes it’s staying.
-Sometimes it’s choosing softness
-when the world feels loud.`,
+We’ve sailed through storms we never thought we’d survive,
+ waves that tested everything we were. Yet in the middle of it all, 
+ we discovered the truth when the world feels heavy, we still have 
+ each other, and that has always been enough.`,
+// Sometimes love isn’t fireworks.
+// Sometimes it’s checking in.
+// Sometimes it’s staying.
+// Sometimes it’s choosing softness
+// when the world feels loud.`,
 
-`💖
-There’s something beautiful
-about being seen without performing,
-about being chosen without pressure,
-about moments that don’t rush,
-but arrive right on time.`,
+
+// There’s something beautiful
+// about being seen without performing,
+// about being chosen without pressure,
+// about moments that don’t rush,
+// but arrive right on time.
+`💖No matter what comes, I keep choosing you.
+ Even on the tired days, when love feels quiet &
+ our hearts need recharging, I believe in us. 
+ I feel it in the way we stay, grow, and keep
+  finding our way back together.`,
 
 `🌹
 This isn’t a big dramatic thing.
@@ -326,9 +341,13 @@ function question() {
   const yesSize = 16 + noClicks * 4;
 
   app.innerHTML = `
-    <h1 class="float-text" style="animation-name:${randomAnim()}">
+    <h3 class="float-text" style="animation-name:${randomAnim()}">
+      Dear Deborah Uwana Oden<br>
+      We've shared two Valantine's Day without the question,<br>
+      but you reminded me that some thinngs deserve to be said out loud.<br>
+      So here i am, intentional and certain,<br>
       Will you be my Valentine? 💖
-    </h1>
+    </h3>
     <div class="buttons">
       <button id="yesBtn" style="font-size:${yesSize}px">Yes 💕</button>
       <button id="noBtn">${NO_PHRASES[Math.min(noClicks,NO_PHRASES.length-1)]}</button>
