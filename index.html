@@ -156,8 +156,210 @@ button {
 <body>
 
 <div class="frame" id="app"></div>
-
 <script>
+  /* =====================
+     AUDIO
+  ===================== */
+  const music = new Audio(
+    "https://cdn.pixabay.com/audio/2023/03/07/audio_1b5c2f93df.mp3"
+  );
+  music.loop = true;
+  
+  /* =====================
+     STATE
+  ===================== */
+  let stage = 0;          // overall stage
+  let messageIndex = 0;  // prelude messages
+  let noClicks = 0;
+  let isValentine = false;
+  
+  const app = document.getElementById("app");
+  
+  /* =====================
+     CONTENT
+  ===================== */
+  const PRELUDE_MESSAGES = [
+    "Hey… how have you been, really?",
+    "I hope today has been gentle with you.",
+    "Love doesn’t always shout — sometimes it just sits quietly.",
+    "It’s nice when someone chooses care, even in small ways.",
+    "So I wanted to ask you something…"
+  ];
+  
+  const NO_PHRASES = [
+    "No 💔",
+    "Pretty please? 🥺",
+    "But we'd be so cute together 💕",
+    "One more chance?",
+    "Don't break my heart :(",
+    "What about a maybe?",
+    "I'm fragile 😭"
+  ];
+  
+  /* =====================
+     RENDER ROUTER
+  ===================== */
+  function render() {
+    if (stage === 0) renderIntro();
+    else if (stage === 1) renderPrelude();
+    else if (stage === 2) renderQuestion();
+    else if (stage === 3) renderSuccess();
+  }
+  
+  /* =====================
+     STAGES
+  ===================== */
+  function renderIntro() {
+    app.innerHTML = `
+      <p class="pop">🌸</p>
+      <p>This is a small moment made with care.</p>
+      <button class="btn-accent mt-4" onclick="startExperience()">
+        Begin
+      </button>
+    `;
+  }
+  
+  function startExperience() {
+    music.play().catch(() => {});
+    stage = 1;
+    render();
+  }
+  
+  /* ---------- PRELUDE (5 messages) ---------- */
+  function renderPrelude() {
+    app.innerHTML = `
+      <div class="pop">🌸🌷💐</div>
+      <p style="font-size:1.1rem;">
+        ${PRELUDE_MESSAGES[messageIndex]}
+      </p>
+      <button class="btn-accent mt-4" onclick="nextPrelude()">
+        Continue
+      </button>
+    `;
+  }
+  
+  function nextPrelude() {
+    messageIndex++;
+    if (messageIndex >= PRELUDE_MESSAGES.length) {
+      stage = 2;
+    }
+    render();
+  }
+  
+  /* ---------- QUESTION ---------- */
+  function renderQuestion() {
+    music.pause();           // 🔑 STOP MUSIC HERE
+    music.currentTime = 0;
+  
+    const yesSize = 16 + noClicks * 5;
+  
+    app.innerHTML = `
+      <h1>Will you be my Valentine? 💘</h1>
+  
+      <div class="buttons mt-4">
+        <button
+          id="yesBtn"
+          style="font-size:${yesSize}px; min-width:140px;"
+        >
+          Yes 💖
+        </button>
+  
+        <button
+          id="noBtn"
+          style="min-width:140px;"
+        >
+          ${noClicks === 0
+            ? "No"
+            : NO_PHRASES[Math.min(noClicks - 1, NO_PHRASES.length - 1)]}
+        </button>
+      </div>
+    `;
+  
+    document.getElementById("yesBtn").onclick = handleYes;
+    enableNoRun();
+  }
+  
+  /* ---------- NO BUTTON LOGIC ---------- */
+  function enableNoRun() {
+    const noBtn = document.getElementById("noBtn");
+    const area = document.querySelector(".buttons");
+  
+    // ensure precise spacing
+    noBtn.style.left = "260px";
+    noBtn.style.top = "0";
+    noBtn.style.position = "absolute";
+    noBtn.style.pointerEvents = "none";
+  
+    area.onmousemove = (e) => {
+      const r = area.getBoundingClientRect();
+      const x = e.clientX - r.left;
+      const y = e.clientY - r.top;
+  
+      noBtn.style.transform =
+        `translate(${-(x - 160) * 0.35}px, ${-(y - 40) * 0.35}px)`;
+    };
+  
+    // count attempts
+    area.onclick = () => {
+      noClicks++;
+      render();
+    };
+  }
+  
+  /* ---------- YES ---------- */
+  function handleYes() {
+    stage = 3;
+    document.body.style.background = "#7b0f1b";
+    render();
+  }
+  
+  /* ---------- SUCCESS ---------- */
+  function renderSuccess() {
+    app.innerHTML = `
+      <div class="pop">🌹💖🌸💐</div>
+      <h1>Yay!!! 💖</h1>
+      <p style="color:#ffeaea;">
+        This moment just bloomed beautifully.
+      </p>
+  
+      <a
+        href="https://wa.me/?text=${encodeURIComponent(
+          "🌸 Someone shared a gentle Valentine moment with me 💖 " +
+          location.href
+        )}"
+        target="_blank"
+      >
+        <button class="btn-accent mt-4">
+          Share on WhatsApp 💬
+        </button>
+      </a>
+    `;
+  
+    startFalling();
+  }
+  
+  /* =====================
+     FALLING FLOWERS / HEARTS
+  ===================== */
+  function startFalling() {
+    const icons = ["💖","🌸","💐","❤️","🌹"];
+  
+    setInterval(() => {
+      const el = document.createElement("div");
+      el.className = "fall";
+      el.textContent = icons[Math.floor(Math.random() * icons.length)];
+      el.style.left = Math.random() * 100 + "vw";
+      el.style.animationDuration = (4 + Math.random() * 4) + "s";
+      document.body.appendChild(el);
+  
+      setTimeout(() => el.remove(), 8000);
+    }, 300);
+  }
+  
+  /* INIT */
+  render();
+  </script>
+<!-- <script>
 /* =====================
    STATE ENGINE
 ===================== */
@@ -277,7 +479,7 @@ function renderShare() {
 
 /* INIT */
 render();
-</script>
+</script> -->
 
 </body>
 </html>
