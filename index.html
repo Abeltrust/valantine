@@ -286,15 +286,19 @@ function randomAnim() {
 /* =====================
    RENDER
 ===================== */
+
 function render() {
-  // startLoveBears();
-  startEmojis();
+  // s
   if (stage === 0) intro();
   else if (stage === 1) poem();
   else if (stage === 2) question();
   else success();
 }
-
+window.addEventListener("DOMContentLoaded", () => {
+  render();
+  startEmojis();
+  startLoveBears();
+});
 /* =====================
    STAGES
 ===================== */
