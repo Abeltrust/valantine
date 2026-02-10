@@ -168,7 +168,12 @@ p {
 <body>
 
 <div class="card-box" id="app"></div>
-
+<script>
+  const BEARS = [
+    "./bear1.gif",
+    "./bear2.gif"
+  ];
+  </script>
 <script>
 /* =====================
    AUDIO (SAFE CDN)
@@ -327,44 +332,49 @@ function poem() {
 }
 
 function question() {
-  //fadeOutMusic();
-
   const yesSize = 16 + noClicks * 4;
 
   app.innerHTML = `
-    <h3 class="float-text" style="animation-name:${randomAnim()}">
-      Dear Deborah Uwana Oden<br>
-      We've shared two Valantine's Day without the question,<br>
-      but you reminded me that some thinngs deserve to be said out loud.<br>
-      So here i am, intentional and certain,<br>
+    <h3 class="float-text" style="animation-name:${randomAnim()}; color:#7b0f1b;">
+      Dear Deborah Uwana Oden<br><br>
+      We've shared two Valentine's Days without the question,<br>
+      but you reminded me that some things deserve to be said out loud.<br><br>
+      So here I am — intentional and certain.<br><br>
       Will you be my Valentine? 💖
     </h3>
+
     <div class="buttons">
       <button id="yesBtn" style="font-size:${yesSize}px">Yes 💕</button>
-      <button id="noBtn">${NO_PHRASES[Math.min(noClicks,NO_PHRASES.length-1)]}</button>
+      <button id="noBtn">${NO_PHRASES[Math.min(noClicks, NO_PHRASES.length - 1)]}</button>
     </div>
   `;
 
   document.getElementById("yesBtn").onclick = () => {
     stage = 3;
-    render();
-    fadeOut(yesMusic);
     fadeIn(music);
-     startEmojis();
+    render();
   };
 
   const area = document.querySelector(".buttons");
   const noBtn = document.getElementById("noBtn");
 
-  area.onmousemove = e => {
+  function moveAway(x, y) {
     const r = area.getBoundingClientRect();
-    const x = e.clientX - r.left;
-    const y = e.clientY - r.top;
     noBtn.style.transform =
-      `translate(${-(x-160)*0.25}px,${-(y-40)*0.25}px)`;
+      `translate(${-(x - r.width/2) * 0.3}px, ${-(y - r.height/2) * 0.3}px)`;
+  }
+
+  area.onmousemove = (e) => moveAway(e.clientX, e.clientY);
+
+  area.ontouchmove = (e) => {
+    const t = e.touches[0];
+    moveAway(t.clientX, t.clientY);
   };
 
-  area.onclick = () => { noClicks++; render(); };
+  noBtn.onclick = () => {
+    noClicks++;
+    render();
+  };
 }
 
 function success() {
@@ -457,36 +467,7 @@ function stopEmojis() {
 window.addEventListener("DOMContentLoaded", startEmojis);
 render();
 </script>
-<script>
-  function enableNoRun() {
-  const noBtn = document.getElementById("noBtn");
-  const area = document.querySelector(".buttons");
 
-  function moveAway(clientX, clientY) {
-    const r = area.getBoundingClientRect();
-    const x = clientX - r.left;
-    const y = clientY - r.top;
-
-    noBtn.style.transform =
-      `translate(${-(x - 160) * 0.3}px, ${-(y - 40) * 0.3}px)`;
-  }
-
-  // Desktop
-  area.onmousemove = (e) => moveAway(e.clientX, e.clientY);
-
-  // Mobile
-  area.ontouchmove = (e) => {
-    const t = e.touches[0];
-    moveAway(t.clientX, t.clientY);
-  };
-
-  // Count every "almost click"
-  noBtn.onclick = () => {
-    noClicks++;
-    render();
-  };
-}
-</script>
 <script>
 
 
@@ -499,11 +480,6 @@ render();
 
   document.addEventListener("touchstart", wakeEmojisOnce, { passive: true });
   document.addEventListener("click", wakeEmojisOnce);
-
-  const BEARS = [
-  "./bear1.gif",  // jumping bear with hearts
-  "./bear2.gif"   // kissing bears / love bear
-];
 </script>
 </body>
 </html>
