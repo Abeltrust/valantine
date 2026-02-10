@@ -133,12 +133,21 @@ p {
 <body>
 
 <div class="card-box" id="app"></div>
-
+<script>
+  /* =====================
+     AUDIO (SAFE CDN)
+  ===================== */
+  const music = new Audio(
+    "https://cdn.jsdelivr.net/gh/jherr/music@main/love.mp3"
+  );
+  music.loop = true;
+  music.volume = 0.7;
+  </script>
 <script>
 /* =====================
    AUDIO (FADE CONTROL)
 ===================== */
-const music = new Audio("https://cdn.pixabay.com/audio/2023/03/07/audio_1b5c2f93df.mp3");
+const music = new Audio("https://cdn.jsdelivr.net/gh/jherr/music@main/love.mp3");
 music.loop = true;
 music.volume = 0.7;
 
