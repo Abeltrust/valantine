@@ -297,7 +297,6 @@ function render() {
 window.addEventListener("DOMContentLoaded", () => {
   render();
   startEmojis();
-  startLoveBears();
 });
 /* =====================
    STAGES
@@ -312,7 +311,6 @@ function intro() {
   document.getElementById("yesBtn").onclick = () => {
     music.play();
     startEmojis();
-    startLoveBears();
     stage = 1;
     render();
   };
@@ -330,7 +328,6 @@ function poem() {
     if (messageIndex >= POEMS.length) stage = 2;
     render();
     startEmojis();
-    startLoveBears();
   };
 }
 
