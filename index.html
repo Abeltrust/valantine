@@ -91,6 +91,8 @@ p {
   margin-top: 4vh;
   position: relative;
   height: 140px;
+  display: flex;
+  gap: 2px;
 }
 
 #yesBtn {
@@ -227,7 +229,7 @@ function render() {
 function intro() {
   app.innerHTML = `
     <p class="float-text wander" style="animation-name:${randomAnim()}">
-      🌸 Take a breath. This is just for you.
+      🌸 Take a deep breath. This is just for you.
     </p>
     <button id="yesBtn" class="mt-4">Begin</button>
   `;
