@@ -254,7 +254,7 @@ function render() {
    STAGES
 ===================== */
 function intro() {
- 
+  startEmojis();
   app.innerHTML = `
     <p class="float-text wander" style="animation-name:${randomAnim()}">
       🌸 Take a deep breath. This is just for you.
@@ -263,6 +263,7 @@ function intro() {
   `;
   document.getElementById("yesBtn").onclick = () => {
     music.play();
+    startEmojis();
     stage = 1;
     render();
   };
