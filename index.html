@@ -147,21 +147,21 @@ p {
 /* =====================
    AUDIO (FADE CONTROL)
 ===================== */
-const music = new Audio("https://cdn.jsdelivr.net/gh/jherr/music@main/love.mp3");
-music.loop = true;
-music.volume = 0.7;
+// const music = new Audio("https://cdn.jsdelivr.net/gh/jherr/music@main/love.mp3");
+// music.loop = true;
+// music.volume = 0.7;
 
-function fadeOutMusic() {
-  const fade = setInterval(() => {
-    if (music.volume > 0.05) {
-      music.volume -= 0.05;
-    } else {
-      music.pause();
-      music.currentTime = 0;
-      clearInterval(fade);
-    }
-  }, 120);
-}
+// function fadeOutMusic() {
+//   const fade = setInterval(() => {
+//     if (music.volume > 0.05) {
+//       music.volume -= 0.05;
+//     } else {
+//       music.pause();
+//       music.currentTime = 0;
+//       clearInterval(fade);
+//     }
+//   }, 120);
+// }
 
 /* =====================
    STATE
