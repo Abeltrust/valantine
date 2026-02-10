@@ -146,13 +146,14 @@ p {
 /* =====================
    AUDIO (SAFE CDN)
 ===================== */
-const music = new Audio( "./yes-love.mp3");
+const music = new Audio( "./love.mp3");
 music.loop = true;
 music.volume = 0.7;
 
-const yesMusic = new Audio("./love.mp3");
+const yesMusic = new Audio("./yes-love.mp3");
 yesMusic.loop = true;
 yesMusic.volume = 0.8;
+
 function fadeIn(audio, duration = 1200) {
   audio.volume = 0;
   audio.play().catch(() => {});
