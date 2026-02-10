@@ -29,6 +29,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 /* =====================
@@ -133,8 +134,10 @@ p {
   position: fixed;
   z-index: 1;
   opacity: .85;
+  pointer-events: none;
   transition: transform 7s linear, opacity 7s linear;
 }
+
 </style>
 </head>
 
@@ -414,6 +417,20 @@ render();
     render();
   };
 }
+</script>
+<script>
+  // Start immediately (desktop)
+  window.addEventListener("DOMContentLoaded", startEmojis);
+
+  // Mobile wake-up fix
+  function wakeEmojisOnce() {
+    startEmojis();
+    document.removeEventListener("touchstart", wakeEmojisOnce);
+    document.removeEventListener("click", wakeEmojisOnce);
+  }
+
+  document.addEventListener("touchstart", wakeEmojisOnce, { passive: true });
+  document.addEventListener("click", wakeEmojisOnce);
 </script>
 </body>
 </html>
