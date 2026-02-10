@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>A Gentle Valentine 💖</title>
+<title>Will You Be My Valentine 💖</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <!-- Bootstrap CDN -->
@@ -13,31 +13,35 @@
 
 <style>
 /* =====================
-   GLOBAL THEME
+   GLOBAL
 ===================== */
-body {
+html, body {
   margin: 0;
-  background: radial-gradient(circle at top, #ffb3c1 0%, #7b0f1b 70%);
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background: #7b0f1b; /* FULL RED */
   font-family: "Playfair Display", serif;
-  min-height: 100vh;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 1.5s ease;
 }
 
 /* =====================
    MAIN CARD
 ===================== */
 .card-box {
-  background: rgba(255, 241, 230, 0.96);
-  padding: 60px;
+  background: rgba(255, 235, 235, 0.95);
+  padding: 6vh 5vw;
   border-radius: 28px;
-  width: 520px;
+  max-width: 560px;
+  width: 92%;
   text-align: center;
-  box-shadow: 0 40px 100px rgba(0,0,0,.25);
-  position: relative;
+  box-shadow: 0 40px 120px rgba(0,0,0,.35);
   z-index: 5;
 }
 
@@ -46,38 +50,28 @@ body {
 ===================== */
 h1 {
   font-family: "Allura", cursive;
-  font-size: 3rem;
-  color: #b71c1c;
+  font-size: clamp(2.4rem, 6vw, 3.2rem);
+  color: #7b0f1b;
+  margin-bottom: 1rem;
 }
 
 p {
-  font-size: 1.1rem;
-  line-height: 1.7;
+  font-size: clamp(1rem, 3.5vw, 1.15rem);
+  line-height: 1.9;
   color: #5a0c18;
+  margin-bottom: 1.2rem;
 }
 
 /* =====================
-   FLOATING TEXT ANIMATIONS
+   TEXT ANIMATIONS
 ===================== */
-@keyframes fromLeft {
-  from { transform: translateX(-50px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
-@keyframes fromRight {
-  from { transform: translateX(50px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
-@keyframes fromTop {
-  from { transform: translateY(-50px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-@keyframes fromBottom {
-  from { transform: translateY(50px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
+@keyframes fromLeft { from {transform:translateX(-40px);opacity:0;} to {transform:none;opacity:1;} }
+@keyframes fromRight{ from {transform:translateX(40px);opacity:0;} to {transform:none;opacity:1;} }
+@keyframes fromTop  { from {transform:translateY(-40px);opacity:0;} to {transform:none;opacity:1;} }
+@keyframes fromBottom{from {transform:translateY(40px);opacity:0;} to {transform:none;opacity:1;} }
 
 .float-text {
-  animation-duration: 1.3s;
+  animation-duration: 1.4s;
   animation-timing-function: ease-out;
 }
 
@@ -86,40 +80,39 @@ p {
 }
 
 @keyframes wander {
-  from { transform: translate(0, 0); }
-  to { transform: translate(6px, -6px); }
+  from { transform: translate(0,0); }
+  to   { transform: translate(6px,-6px); }
 }
 
 /* =====================
    BUTTONS
 ===================== */
 .buttons {
-  margin-top: 50px;
+  margin-top: 4vh;
   position: relative;
   height: 140px;
 }
 
 #yesBtn {
-  padding: 12px 28px;
+  padding: 14px 34px;
   border-radius: 30px;
   border: none;
-  background: #b71c1c;
+  background: #7b0f1b;
   color: #fff;
   font-size: 16px;
-  position: relative;
   z-index: 3;
 }
 
 #noBtn {
   position: absolute;
-  left: 300px;
+  left: 55%;
   top: 0;
-  padding: 12px 28px;
+  padding: 14px 34px;
   border-radius: 30px;
   border: 1px solid #aaa;
   background: transparent;
   color: #444;
-  pointer-events: none;
+  pointer-events: auto;
   transition: transform .25s ease;
 }
 
@@ -128,10 +121,9 @@ p {
 ===================== */
 .float-emoji {
   position: fixed;
-  font-size: 24px;
-  opacity: 0.8;
   z-index: 1;
-  transition: transform 6s linear, opacity 6s linear;
+  opacity: .85;
+  transition: transform 7s linear, opacity 7s linear;
 }
 </style>
 </head>
@@ -142,12 +134,23 @@ p {
 
 <script>
 /* =====================
-   AUDIO
+   AUDIO (FADE CONTROL)
 ===================== */
-const music = new Audio(
-  "https://cdn.pixabay.com/audio/2023/03/07/audio_1b5c2f93df.mp3"
-);
+const music = new Audio("https://cdn.pixabay.com/audio/2023/03/07/audio_1b5c2f93df.mp3");
 music.loop = true;
+music.volume = 0.7;
+
+function fadeOutMusic() {
+  const fade = setInterval(() => {
+    if (music.volume > 0.05) {
+      music.volume -= 0.05;
+    } else {
+      music.pause();
+      music.currentTime = 0;
+      clearInterval(fade);
+    }
+  }, 120);
+}
 
 /* =====================
    STATE
@@ -159,176 +162,199 @@ let noClicks = 0;
 const app = document.getElementById("app");
 
 /* =====================
-   CONTENT
+   CONTENT (POEMS)
 ===================== */
-const PRELUDE_MESSAGES = [
-  "Hey… how have you been, really?",
-  "I hope today has been gentle with you.",
-  "Love doesn’t always shout — sometimes it just sits quietly.",
-  "It’s nice when someone chooses care, even in small ways.",
-  "So I wanted to ask you something…"
+const POEMS = [
+`Hey…
+How has your heart been today?
+Not the busy part — the quiet part.
+I hope it’s been treated gently,
+because gentleness deserves gentleness.`,
+
+`Sometimes love isn’t fireworks.
+Sometimes it’s checking in.
+Sometimes it’s staying.
+Sometimes it’s choosing softness
+when the world feels loud.`,
+
+`There’s something beautiful
+about being seen without performing,
+about being chosen without pressure,
+about moments that don’t rush,
+but arrive right on time.`,
+
+`This isn’t a big dramatic thing.
+It’s just a small, honest question,
+wrapped in care,
+with no expectations —
+only sincerity.`,
+
+`So here I am,
+asking with a calm heart
+and a hopeful smile…`
 ];
 
 const NO_PHRASES = [
   "No 💔",
-  "Pretty please? 🥺",
-  "But we'd be so cute together 💕",
-  "One more chance?",
-  "Don't break my heart :(",
-  "What about a maybe?",
-  "I'm fragile 😭"
+  "Are you sure? 🥺",
+  "We’d be kind to each other 💕",
+  "One more thought?",
+  "Don’t leave love waiting",
+  "Maybe… just maybe?"
 ];
 
 /* =====================
    HELPERS
 ===================== */
-function randomTextAnimation() {
-  const a = ["fromLeft", "fromRight", "fromTop", "fromBottom"];
-  return a[Math.floor(Math.random() * a.length)];
+function randomAnim() {
+  return ["fromLeft","fromRight","fromTop","fromBottom"]
+    [Math.floor(Math.random()*4)];
 }
 
 /* =====================
-   RENDER ROUTER
+   RENDER
 ===================== */
 function render() {
-  if (stage === 0) renderIntro();
-  else if (stage === 1) renderPrelude();
-  else if (stage === 2) renderQuestion();
-  else renderSuccess();
+  if (stage === 0) intro();
+  else if (stage === 1) poem();
+  else if (stage === 2) question();
+  else success();
 }
 
 /* =====================
    STAGES
 ===================== */
-function renderIntro() {
+function intro() {
   app.innerHTML = `
-    <p class="float-text wander" style="animation-name:${randomTextAnimation()}">
-      🌸 This is a small moment made with care.
+    <p class="float-text wander" style="animation-name:${randomAnim()}">
+      🌸 Take a breath. This is just for you.
     </p>
-    <button id="yesBtn" class="mt-4" onclick="startExperience()">Begin</button>
+    <button id="yesBtn" class="mt-4">Begin</button>
   `;
-}
-
-function startExperience() {
-  music.play().catch(() => {});
-  stage = 1;
-  render();
-}
-
-function renderPrelude() {
-  app.innerHTML = `
-    <p class="float-text wander" style="animation-name:${randomTextAnimation()}">
-      ${PRELUDE_MESSAGES[messageIndex]}
-    </p>
-    <button id="yesBtn" class="mt-4" onclick="nextPrelude()">Continue</button>
-  `;
-}
-
-function nextPrelude() {
-  messageIndex++;
-  if (messageIndex >= PRELUDE_MESSAGES.length) {
-    stage = 2;
-  }
-  render();
-}
-
-function renderQuestion() {
-  music.pause();
-  music.currentTime = 0;
-
-  const yesSize = 16 + noClicks * 5;
-
-  app.innerHTML = `
-    <h1 class="float-text" style="animation-name:${randomTextAnimation()}">
-      Will you be my Valentine? 💘
-    </h1>
-
-    <div class="buttons">
-      <button id="yesBtn" style="font-size:${yesSize}px">Yes 💖</button>
-      <button id="noBtn">
-        ${noClicks === 0 ? "No" : NO_PHRASES[Math.min(noClicks - 1, NO_PHRASES.length - 1)]}
-      </button>
-    </div>
-  `;
-
-  document.getElementById("yesBtn").onclick = handleYes;
-  enableNoRun();
-}
-
-function enableNoRun() {
-  const noBtn = document.getElementById("noBtn");
-  const area = document.querySelector(".buttons");
-
-  area.onmousemove = (e) => {
-    const r = area.getBoundingClientRect();
-    const x = e.clientX - r.left;
-    const y = e.clientY - r.top;
-
-    noBtn.style.transform =
-      `translate(${-(x - 160) * 0.35}px, ${-(y - 40) * 0.35}px)`;
-  };
-
-  area.onclick = () => {
-    noClicks++;
+  document.getElementById("yesBtn").onclick = () => {
+    music.play();
+    stage = 1;
     render();
   };
 }
 
-function handleYes() {
-  document.body.style.background =
-    "radial-gradient(circle at center, #ff6f91 0%, #5a0c18 80%)";
-  stage = 3;
-  render();
+function poem() {
+  app.innerHTML = `
+    <p class="float-text wander" style="animation-name:${randomAnim()}">
+      ${POEMS[messageIndex].replace(/\n/g,"<br>")}
+    </p>
+    <button id="yesBtn" class="mt-4">Continue</button>
+  `;
+  document.getElementById("yesBtn").onclick = () => {
+    messageIndex++;
+    if (messageIndex >= POEMS.length) stage = 2;
+    render();
+  };
 }
 
-function renderSuccess() {
+function question() {
+  fadeOutMusic();
+
+  const yesSize = 16 + noClicks * 4;
+
   app.innerHTML = `
-    <h1 class="float-text wander" style="animation-name:${randomTextAnimation()}">
-      Yay!!! 💖
+    <h1 class="float-text" style="animation-name:${randomAnim()}">
+      Will you be my Valentine? 💖
+    </h1>
+    <div class="buttons">
+      <button id="yesBtn" style="font-size:${yesSize}px">Yes 💕</button>
+      <button id="noBtn">${NO_PHRASES[Math.min(noClicks,NO_PHRASES.length-1)]}</button>
+    </div>
+  `;
+
+  document.getElementById("yesBtn").onclick = () => {
+    stage = 3;
+    render();
+  };
+
+  const area = document.querySelector(".buttons");
+  const noBtn = document.getElementById("noBtn");
+
+  area.onmousemove = e => {
+    const r = area.getBoundingClientRect();
+    const x = e.clientX - r.left;
+    const y = e.clientY - r.top;
+    noBtn.style.transform =
+      `translate(${-(x-160)*0.25}px,${-(y-40)*0.25}px)`;
+  };
+
+  area.onclick = () => { noClicks++; render(); };
+}
+
+function success() {
+  app.innerHTML = `
+    <h1 class="float-text " style="animation-name:${randomAnim()}">
+      You just made this moment beautiful 💖
     </h1>
     <p class="float-text wander">
-      This moment just bloomed beautifully.
+      Thank you for choosing with your heart.
     </p>
-
     <a href="https://wa.me/?text=${encodeURIComponent(
-      "🌸 Someone shared a gentle Valentine moment with me 💖 " + location.href
+      "💖 Someone shared this Valentine moment with me 💕 " + location.href
     )}" target="_blank">
       <button id="yesBtn" class="mt-4">Share on WhatsApp 💬</button>
     </a>
   `;
-
-  startFloatingEmojis();
+  startEmojis();
 }
 
 /* =====================
-   FLOATING EMOJIS
+   EMOJIS
 ===================== */
-function startFloatingEmojis() {
-  const icons = ["💖", "🌸", "💐", "❤️", "🌹"];
-
+function startEmojis() {
+  const icons = ["💖","🌸","💐","❤️","🌹"];
   setInterval(() => {
-    const el = document.createElement("div");
-    el.className = "float-emoji";
-    el.textContent = icons[Math.floor(Math.random() * icons.length)];
-    el.style.left = Math.random() * 100 + "vw";
-    el.style.top = "110vh";
-    el.style.fontSize = 18 + Math.random() * 22 + "px";
-
-    document.body.appendChild(el);
-
+    const e = document.createElement("div");
+    e.className = "float-emoji";
+    e.textContent = icons[Math.floor(Math.random()*icons.length)];
+    e.style.left = Math.random()*100+"vw";
+    e.style.top = "110vh";
+    e.style.fontSize = 18+Math.random()*22+"px";
+    document.body.appendChild(e);
     requestAnimationFrame(() => {
-      el.style.transform =
-        `translate(${(Math.random() - 0.5) * 200}px, -120vh)`;
-      el.style.opacity = 0;
+      e.style.transform = `translate(${(Math.random()-0.5)*180}px,-120vh)`;
+      e.style.opacity = 0;
     });
-
-    setTimeout(() => el.remove(), 6000);
+    setTimeout(()=>e.remove(),7000);
   }, 350);
 }
 
-/* INIT */
 render();
 </script>
+<script>
+  function enableNoRun() {
+  const noBtn = document.getElementById("noBtn");
+  const area = document.querySelector(".buttons");
 
+  function moveAway(clientX, clientY) {
+    const r = area.getBoundingClientRect();
+    const x = clientX - r.left;
+    const y = clientY - r.top;
+
+    noBtn.style.transform =
+      `translate(${-(x - 160) * 0.3}px, ${-(y - 40) * 0.3}px)`;
+  }
+
+  // Desktop
+  area.onmousemove = (e) => moveAway(e.clientX, e.clientY);
+
+  // Mobile
+  area.ontouchmove = (e) => {
+    const t = e.touches[0];
+    moveAway(t.clientX, t.clientY);
+  };
+
+  // Count every "almost click"
+  noBtn.onclick = () => {
+    noClicks++;
+    render();
+  };
+}
+</script>
 </body>
 </html>
