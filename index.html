@@ -117,7 +117,15 @@ p {
   pointer-events: auto;
   transition: transform .25s ease;
 }
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.05); }
+  40% { transform: scale(1); }
+}
 
+#yesBtn {
+  animation: heartbeat 2.5s infinite;
+}
 /* =====================
    FLOATING EMOJIS
 ===================== */
@@ -138,22 +146,36 @@ p {
 /* =====================
    AUDIO (SAFE CDN)
 ===================== */
-const music = new Audio(
-  "./love.mp3"
-);
+const music = new Audio( "./yes-love.mp3");
 music.loop = true;
 music.volume = 0.7;
 
-function fadeOutMusic(duration = 1200) {
-  const step = music.volume / (duration / 50);
-
+const yesMusic = new Audio("./love.mp3");
+yesMusic.loop = true;
+yesMusic.volume = 0.8;
+function fadeIn(audio, duration = 1200) {
+  audio.volume = 0;
+  audio.play().catch(() => {});
+  const step = 1 / (duration / 50);
   const fade = setInterval(() => {
-    if (music.volume > step) {
-      music.volume -= step;
+    if (audio.volume < 1 - step) {
+      audio.volume += step;
     } else {
-      music.volume = 0;
-      music.pause();
-      music.currentTime = 0;
+      audio.volume = 1;
+      clearInterval(fade);
+    }
+  }, 50);
+}
+
+function fadeOut(audio, duration = 1200) {
+  const step = audio.volume / (duration / 50);
+  const fade = setInterval(() => {
+    if (audio.volume > step) {
+      audio.volume -= step;
+    } else {
+      audio.volume = 0;
+      audio.pause();
+      audio.currentTime = 0;
       clearInterval(fade);
     }
   }, 50);
@@ -232,6 +254,7 @@ function render() {
    STAGES
 ===================== */
 function intro() {
+  startEmojis();
   app.innerHTML = `
     <p class="float-text wander" style="animation-name:${randomAnim()}">
       🌸 Take a deep breath. This is just for you.
@@ -242,7 +265,6 @@ function intro() {
     music.play();
     stage = 1;
     render();
-    startEmojis();
   };
 }
 
@@ -262,7 +284,7 @@ function poem() {
 }
 
 function question() {
-  fadeOutMusic();
+  //fadeOutMusic();
 
   const yesSize = 16 + noClicks * 4;
 
@@ -279,6 +301,8 @@ function question() {
   document.getElementById("yesBtn").onclick = () => {
     stage = 3;
     render();
+    fadeOut(introMusic);
+    fadeIn(yesMusic);
      startEmojis();
   };
 
@@ -297,6 +321,8 @@ function question() {
 }
 
 function success() {
+  document.body.style.boxShadow =
+  "inset 0 0 120px rgba(255,180,190,.35)";
   app.innerHTML = `
     <h1 class="float-text " style="animation-name:${randomAnim()}">
       You just made this moment beautiful 💖
@@ -316,8 +342,14 @@ function success() {
 /* =====================
    EMOJIS
 ===================== */
+let emojisStarted = false;
+
 function startEmojis() {
+  if (emojisStarted) return;
+  emojisStarted = true;
+
   const icons = ["💖","🌸","💐","❤️","🌹"];
+
   setInterval(() => {
     const e = document.createElement("div");
     e.className = "float-emoji";
@@ -326,11 +358,14 @@ function startEmojis() {
     e.style.top = "110vh";
     e.style.fontSize = 18+Math.random()*22+"px";
     document.body.appendChild(e);
+
     requestAnimationFrame(() => {
-      e.style.transform = `translate(${(Math.random()-0.5)*180}px,-120vh)`;
+      e.style.transform =
+        `translate(${(Math.random()-0.5)*180}px,-120vh)`;
       e.style.opacity = 0;
     });
-     setTimeout(()=>e.remove(),7000);
+
+    setTimeout(()=>e.remove(),7000);
   }, 350);
 }
 
