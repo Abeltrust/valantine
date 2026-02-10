@@ -136,22 +136,27 @@ p {
 
 <script>
 /* =====================
-   AUDIO (FADE CONTROL)
+   AUDIO (SAFE CDN)
 ===================== */
-const music = new Audio("https://cdn.pixabay.com/audio/2023/03/07/audio_1b5c2f93df.mp3");
+const music = new Audio(
+  "./love.mp3"
+);
 music.loop = true;
 music.volume = 0.7;
 
-function fadeOutMusic() {
+function fadeOutMusic(duration = 1200) {
+  const step = music.volume / (duration / 50);
+
   const fade = setInterval(() => {
-    if (music.volume > 0.05) {
-      music.volume -= 0.05;
+    if (music.volume > step) {
+      music.volume -= step;
     } else {
+      music.volume = 0;
       music.pause();
       music.currentTime = 0;
       clearInterval(fade);
     }
-  }, 120);
+  }, 50);
 }
 
 /* =====================
