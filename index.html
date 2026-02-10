@@ -237,6 +237,7 @@ function intro() {
     music.play();
     stage = 1;
     render();
+    startEmojis();
   };
 }
 
@@ -251,6 +252,7 @@ function poem() {
     messageIndex++;
     if (messageIndex >= POEMS.length) stage = 2;
     render();
+    startEmojis();
   };
 }
 
@@ -272,6 +274,7 @@ function question() {
   document.getElementById("yesBtn").onclick = () => {
     stage = 3;
     render();
+    startEmojis();
   };
 
   const area = document.querySelector(".buttons");
