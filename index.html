@@ -276,6 +276,7 @@ function randomAnim() {
    RENDER
 ===================== */
 function render() {
+  startLoveBears();
   startEmojis();
   if (stage === 0) intro();
   else if (stage === 1) poem();
@@ -297,6 +298,7 @@ function intro() {
   document.getElementById("yesBtn").onclick = () => {
     music.play();
     startEmojis();
+    startLoveBears();
     stage = 1;
     render();
   };
@@ -314,6 +316,7 @@ function poem() {
     if (messageIndex >= POEMS.length) stage = 2;
     render();
     startEmojis();
+    startLoveBears();
   };
 }
 
@@ -365,6 +368,11 @@ function success() {
     <p class="float-text wander">
       Thank you for choosing with your heart.
     </p>
+    <a href="https://wa.me/?text=${encodeURIComponent(
+      "💖 Someone shared this Valentine moment with me 💕 " + location.href
+    )}">
+      <button id="yesBtn" class="mt-4">Share on WhatsApp 💬</button>
+    </a>
   `;
 
   startEmojis();     // hearts & flowers
@@ -372,11 +380,7 @@ function success() {
 }
 
 /* =====================
-   EMOJIS <a href="https://wa.me/?text=${encodeURIComponent(
-      "💖 Someone shared this Valentine moment with me 💕 " + location.href
-    )}">
-      <button id="yesBtn" class="mt-4">Share on WhatsApp 💬</button>
-    </a>
+   EMOJIS 
 ===================== */
 let emojisStarted = false;
 
